@@ -1,61 +1,59 @@
-# Importing necessary libraries
 import streamlit as st
-import pandas as pd
-import numpy as np
-import pickle
-import os
 import joblib
-from sklearn.preprocessing import LabelEncoder, StandardScaler
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
+import numpy as np
+import os
 
-# Load the model (Ensure the file path is correct)
+# Load the model
 model_path = os.path.join(os.path.dirname(__file__), 'Lung_cancer_model')
 model = joblib.load(model_path)
 
-#def main():
-st.title("Lung Cancer Prediction App")
-st.write("Enter the following details to predict the likelihood of lung cancer:")
+def main():
+    st.title("Lung Cancer Prediction")
 
-# Input fields
-gender = st.selectbox("Gender", ["male","female"])
-gender = 1 if gender == "Male" else 0
-age = st.slider("Age", 18, 100)
-smoking = st.selectbox("Smoking (1 for Yes, 2 for No)", [1, 2])
-yellow_fingers = st.selectbox("Yellow Fingers (1 for Yes, 2 for No)", [1, 2])
-anxiety = st.selectbox("Anxiety (1 for Yes, 2 for No)", [1, 2])
-peer_pressure = st.selectbox("Peer Pressure (1 for Yes, 2 for No)", [1, 2])
-chronic_disease = st.selectbox("Chronic Disease (1 for Yes, 2 for No)", [1, 2])
-fatigue = st.selectbox("Fatigue (1 for Yes, 2 for No)", [1, 2])
-allergy = st.selectbox("Allergy (1 for Yes, 2 for No)", [1, 2])
-wheezing = st.selectbox("Wheezing (1 for Yes, 2 for No)", [1, 2])
-alcohol_consuming = st.selectbox("Alcohol Consuming (1 for Yes, 2 for No)", [1, 2])
-coughing = st.selectbox("Coughing (1 for Yes, 2 for No)", [1, 2])
-shortness_of_breath = st.selectbox("Shortness of Breath (1 for Yes, 2 for No)", [1, 2])
-swallowing_difficulty = st.selectbox("Swallowing Difficulty (1 for Yes, 2 for No)", [1, 2])
-chest_pain = st.selectbox("Chest Pain (1 for Yes, 2 for No)", [1, 2])
+    # Input fields
+    p1 = st.slider("Enter your age", 1, 120, 30)
+    p2 = st.selectbox("Smoking Habit", ("Yes", "No"))
+    smoking = 1 if p2 == "Yes" else 0
+    p3 = st.selectbox("Yellow Fingers", ("Yes", "No"))
+    yellow_fingers = 1 if p3 == "Yes" else 0
+    p4 = st.selectbox("Anxiety", ("Yes", "No"))
+    anxiety = 1 if p4 == "Yes" else 0
+    p5 = st.selectbox("Peer Pressure", ("Yes", "No"))
+    peer_pressure = 1 if p5 == "Yes" else 0
+    p6 = st.selectbox("Chronic Disease", ("Yes", "No"))
+    chronic_disease = 1 if p6 == "Yes" else 0
+    p7 = st.selectbox("Fatigue", ("Yes", "No"))
+    fatigue = 1 if p7 == "Yes" else 0
+    p8 = st.selectbox("Allergy", ("Yes", "No"))
+    allergy = 1 if p8 == "Yes" else 0
+    p9 = st.selectbox("Wheezing", ("Yes", "No"))
+    wheezing = 1 if p9 == "Yes" else 0
+    p10 = st.selectbox("Alcohol Consumption", ("Yes", "No"))
+    alcohol_consumption = 1 if p10 == "Yes" else 0
+    p11 = st.selectbox("Coughing", ("Yes", "No"))
+    coughing = 1 if p11 == "Yes" else 0
+    p12 = st.selectbox("Shortness of Breath", ("Yes", "No"))
+    shortness_of_breath = 1 if p12 == "Yes" else 0
+    p13 = st.selectbox("Swallowing Difficulty", ("Yes", "No"))
+    swallowing_difficulty = 1 if p13 == "Yes" else 0
+    p14 = st.selectbox("Chest Pain", ("Yes", "No"))
+    chest_pain = 1 if p14 == "Yes" else 0
 
-# Create a DataFrame for the input data
-input_data = pd.DataFrame({
-    'GENDER': [gender],
-    'AGE': [age],
-    'SMOKING': [smoking],
-    'YELLOW_FINGERS': [yellow_fingers],
-    'ANXIETY': [anxiety],
-    'PEER_PRESSURE': [peer_pressure],
-    'CHRONIC DISEASE': [chronic_disease],
-    'FATIGUE': [fatigue],
-    'ALLERGY': [allergy],
-    'WHEEZING': [wheezing],
-    'ALCOHOL CONSUMING': [alcohol_consuming],
-    'COUGHING': [coughing],
-    'SHORTNESS OF BREATH': [shortness_of_breath],
-    'SWALLOWING DIFFICULTY': [swallowing_difficulty],
-    'CHEST PAIN': [chest_pain]
-})
-    
-# Predict button
-if st.button("Predict Lung Cancer Risk"):
-    prediction = model.predict(input_data)
-    result = "High Risk of Lung Cancer" if prediction == 1 else "Low Risk of Lung Cancer"
-    st.write("Prediction:", result)
+    # Combine inputs into a single array
+    input_data = np.array([[p1, smoking, yellow_fingers, anxiety, peer_pressure, chronic_disease,
+                            fatigue, allergy, wheezing, alcohol_consumption, coughing,
+                            shortness_of_breath, swallowing_difficulty, chest_pain]])
+
+    # Predict button
+    if st.button("Predict"):
+        try:
+            prediction = model.predict(input_data)
+            if prediction[0] == 1:
+                st.error("The patient is likely to have lung cancer.")
+            else:
+                st.success("The patient is unlikely to have lung cancer.")
+        except Exception as e:
+            st.error(f"Error in prediction: {e}")
+
+if __name__ == '__main__':
+    main()
