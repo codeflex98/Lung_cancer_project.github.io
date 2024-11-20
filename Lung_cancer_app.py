@@ -63,9 +63,6 @@ input_data = pd.DataFrame({
     'SWALLOWING DIFFICULTY': [swallowing_difficulty],
     'CHEST PAIN': [chest_pain]
 })
-
-if hasattr(model, 'monotonic_cst'):
-    del model.monotonic_cst
     
 # Predict button
 if st.button("Predict Lung Cancer Risk"):
