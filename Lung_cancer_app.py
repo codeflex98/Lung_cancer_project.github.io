@@ -64,6 +64,9 @@ input_data = pd.DataFrame({
     'CHEST PAIN': [chest_pain]
 })
 
+if hasattr(model, 'monotonic_cst'):
+    del model.monotonic_cst
+    
 # Predict button
 if st.button("Predict Lung Cancer Risk"):
     prediction = model.predict(input_data)[0]
