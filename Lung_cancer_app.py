@@ -56,6 +56,6 @@ input_data = pd.DataFrame({
     
 # Predict button
 if st.button("Predict Lung Cancer Risk"):
-    prediction = model.predict(input_data)[0]
+    prediction = model.predict(input_data)
     result = "High Risk of Lung Cancer" if prediction == 1 else "Low Risk of Lung Cancer"
     st.write("Prediction:", result)
