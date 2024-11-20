@@ -18,8 +18,8 @@ st.title("Lung Cancer Prediction App")
 st.write("Enter the following details to predict the likelihood of lung cancer:")
 
 # Input fields
-gender = st.selectbox("Gender", ["Male", "Female"])
-gender = 1 if gender == "Male" else 0
+gender = st.selectbox("Gender", 1, 2)
+# gender = 1 if gender == "Male" else 0
 age = st.slider("Age", 18, 100)
 smoking = st.selectbox("Smoking (1 for Yes, 2 for No)", [1, 2])
 yellow_fingers = st.selectbox("Yellow Fingers (1 for Yes, 2 for No)", [1, 2])
