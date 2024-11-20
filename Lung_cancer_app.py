@@ -13,14 +13,6 @@ from sklearn.model_selection import train_test_split
 model_path = os.path.join(os.path.dirname(__file__), 'Lung_cancer_model')
 model = joblib.load(model_path)
 
-
-# Create a function for making predictions
-def predict_lung_cancer(model, input_data):
-    # Input data can be a single row dataframe based on user input
-    prediction = model.predict(input_data)
-    probability = model.predict_proba(input_data) if hasattr(model, 'predict_proba') else None
-    return prediction, probability
-
 #def main():
 st.title("Lung Cancer Prediction App")
 st.write("Enter the following details to predict the likelihood of lung cancer:")
