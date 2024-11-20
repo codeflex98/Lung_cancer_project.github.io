@@ -69,6 +69,3 @@ if st.button("Predict Lung Cancer Risk"):
     prediction = model.predict(input_data)[0]
     result = "High Risk of Lung Cancer" if prediction == 1 else "Low Risk of Lung Cancer"
     st.write("Prediction:", result)
-
-if __name__ == '__main__':
-    main()
