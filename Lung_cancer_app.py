@@ -27,6 +27,7 @@ st.write("Enter the following details to predict the likelihood of lung cancer:"
 
 # Input fields
 gender = st.selectbox("Gender", ["Male", "Female"])
+gender = 1 if gender == "Male" else 0
 age = st.slider("Age", 18, 100)
 smoking = st.selectbox("Smoking (1 for Yes, 2 for No)", [1, 2])
 yellow_fingers = st.selectbox("Yellow Fingers (1 for Yes, 2 for No)", [1, 2])
@@ -41,9 +42,6 @@ coughing = st.selectbox("Coughing (1 for Yes, 2 for No)", [1, 2])
 shortness_of_breath = st.selectbox("Shortness of Breath (1 for Yes, 2 for No)", [1, 2])
 swallowing_difficulty = st.selectbox("Swallowing Difficulty (1 for Yes, 2 for No)", [1, 2])
 chest_pain = st.selectbox("Chest Pain (1 for Yes, 2 for No)", [1, 2])
-
-# Map gender input
-gender = 1 if gender == "Male" else 0
 
 # Create a DataFrame for the input data
 input_data = pd.DataFrame({
