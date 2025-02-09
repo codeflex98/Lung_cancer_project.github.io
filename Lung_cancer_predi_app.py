@@ -1,76 +1,53 @@
 import streamlit as st
 import pandas as pd
-import joblib
+import pickle
 
 # Load the trained model
-model_filename = 'Lung_cancer_model.pkl'
-model = joblib.load(model_filename)
+MODEL_PATH = "lung_cancer_model.pkl" 
 
-# Title and description
+@st.cache_data
+def load_model():
+    with open(MODEL_PATH, "rb") as file:
+        model = pickle.load(file)
+    return model
+
+# Load the model
+model = load_model()
+
+# Streamlit UI
 st.title("Lung Cancer Prediction App")
-st.write("""
-This app predicts the likelihood of a patient having lung cancer based on their inputs. 
-Fill out the details below and click on **Predict** to see the result.
-""")
+st.write("Provide the input features to predict lung cancer.")
 
-# User input form
-def user_input_features():
-    gender = st.selectbox("Gender", ["Male", "Female"])
-    age = st.number_input("Age", min_value=1, max_value=120, step=1, value=30)
-    smoking = st.slider("Smoking Level (1-2)", min_value=1, max_value=2, value=1)
-    yellow_fingers = st.slider("Yellow Fingers (1-2)", min_value=1, max_value=2, value=1)
-    anxiety = st.slider("Anxiety Level (1-2)", min_value=1, max_value=2, value=1)
-    peer_pressure = st.slider("Peer Pressure Level (1-2)", min_value=1, max_value=2, value=1)
-    chronic_disease = st.slider("Chronic Disease Level (1-2)", min_value=1, max_value=2, value=1)
-    fatigue = st.slider("Fatigue Level (1-2)", min_value=1, max_value=2, value=1)
-    allergy = st.slider("Allergy Level (1-2)", min_value=1, max_value=2, value=1)
-    wheezing = st.slider("Wheezing Level (1-2)", min_value=1, max_value=2, value=1)
-    alcohol_consuming = st.slider("Alcohol Consuming Level (1-2)", min_value=1, max_value=2, value=1)
-    coughing = st.slider("Coughing Level (1-2)", min_value=1, max_value=2, value=1)
-    shortness_of_breath = st.slider("Shortness of Breath (1-2)", min_value=1, max_value=2, value=1)
-    swallowing_difficulty = st.slider("Swallowing Difficulty Level (1-2)", min_value=1, max_value=2, value=1)
-    chest_pain = st.slider("Chest Pain Level (1-2)", min_value=1, max_value=2, value=1)
+# Define input fields based on the model's features
+# Modify the feature names based on your dataset
+age = st.number_input("Age", min_value=18, max_value=100, value=50)
+smoking = st.selectbox("Smoking", ["No", "Yes"])
+alcohol = st.selectbox("Alcohol Consumption", ["No", "Yes"])
+family_history = st.selectbox("Family History of Cancer", ["No", "Yes"])
+chronic_disease = st.selectbox("Chronic Diseases", ["No", "Yes"])
+coughing = st.selectbox("Frequent Coughing", ["No", "Yes"])
+shortness_of_breath = st.selectbox("Shortness of Breath", ["No", "Yes"])
 
-    # Encode gender as numerical
-    gender_encoded = 1 if gender == "Male" else 0
+# Convert categorical inputs into numerical values
+input_data = pd.DataFrame({
+    "Age": [age],
+    "Smoking": [1 if smoking == "Yes" else 0],
+    "Alcohol Consumption": [1 if alcohol == "Yes" else 0],
+    "Family History": [1 if family_history == "Yes" else 0],
+    "Chronic Disease": [1 if chronic_disease == "Yes" else 0],
+    "Coughing": [1 if coughing == "Yes" else 0],
+    "Shortness of Breath": [1 if shortness_of_breath == "Yes" else 0]
+})
 
-    # Create a dataframe for the input
-    data = {
-        "GENDER": gender_encoded,
-        "AGE": age,
-        "SMOKING": smoking,
-        "YELLOW_FINGERS": yellow_fingers,
-        "ANXIETY": anxiety,
-        "PEER_PRESSURE": peer_pressure,
-        "CHRONIC DISEASE": chronic_disease,
-        "FATIGUE": fatigue,
-        "ALLERGY": allergy,
-        "WHEEZING": wheezing,
-        "ALCOHOL CONSUMING": alcohol_consuming,
-        "COUGHING": coughing,
-        "SHORTNESS OF BREATH": shortness_of_breath,
-        "SWALLOWING DIFFICULTY": swallowing_difficulty,
-        "CHEST PAIN": chest_pain,
-    }
-
-    return pd.DataFrame(data, index=[0])
-
-# Get user input
-input_data = user_input_features()
-
-# Display user input
-st.write("### Patient's Input:")
-st.write(input_data)
-
-# Prediction button
-if st.button("Predict"):
+# Prediction
+if st.button("Predict"): 
     prediction = model.predict(input_data)
-    result = "Lung Cancer Likely" if prediction[0] == 1 else "Lung Cancer Unlikely"
-    st.write("### Prediction Result:")
-    st.write(result)
+    probability = model.predict_proba(input_data)[:, 1]
+    
+    st.subheader("Prediction Result")
+    if prediction[0] == 1:
+        st.error(f"The model predicts a HIGH RISK of lung cancer with {probability[0]*100:.2f}% probability.")
+    else:
+        st.success(f"The model predicts a LOW RISK of lung cancer with {probability[0]*100:.2f}% probability.")
 
-# Footer
-st.write("""
----
-Developed with ❤️ using Streamlit.
-""")
+st.write("Disclaimer: This is an AI-based prediction and not a medical diagnosis. Please consult a doctor for medical advice.")
