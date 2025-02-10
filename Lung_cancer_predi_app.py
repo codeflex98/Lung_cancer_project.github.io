@@ -10,7 +10,7 @@ model = joblib.load(model_path)
 
 # Streamlit UI
 st.title("Lung Cancer Prediction App")
-st.write("Provide the input features to predict lung cancer.")
+st.write("Provide the input features to predict lung cancer")
 
 # Define input fields based on the model's features
 def main():
