@@ -70,11 +70,11 @@ def main():
 
        # Display results
         if prediction == 1:
-            st.success(f"The patient has high risk of Lung cancer")
+            st.error(f"The patient has high risk of Lung cancer")
             gif_url_1 = "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNW5yYWZvOHl4NTNib2FlM2M5bTh1M2dpN2w4ejlkaHgwa200M3FzcCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2VhAudAv44oyaVDAhc/giphy.gif"
             st.markdown(f'<img src="{gif_url_1}" width="600" height="400">', unsafe_allow_html=True)
         else:
-            st.error(f"The patient has low risk of Lung cancer")
+            st.success(f"The patient has low risk of Lung cancer")
             gif_url_1 = "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExbGo1bzZhd3pncXpidHBsYzJwazJpa2RtdW5lYndqcXRkbDl6MmtwcSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/TwXLDHoI3yFtMcoRxD/giphy.gif"
             st.markdown(f'<img src="{gif_url_1}" width="600" height="400">', unsafe_allow_html=True)
 
