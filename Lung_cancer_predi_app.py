@@ -1,53 +1,82 @@
 import streamlit as st
 import pandas as pd
-import pickle
+import joblib
+import os
+import numpy as np
 
 # Load the trained model
-MODEL_PATH = "lung_cancer_model.pkl" 
-
-@st.cache_data
-def load_model():
-    with open(MODEL_PATH, "rb") as file:
-        model = pickle.load(file)
-    return model
-
-# Load the model
-model = load_model()
+model_path = os.path.join(os.path.dirname(__file__), 'Lung_cancer_model.pkl')
+model = joblib.load(model_path)
 
 # Streamlit UI
 st.title("Lung Cancer Prediction App")
 st.write("Provide the input features to predict lung cancer.")
 
 # Define input fields based on the model's features
-# Modify the feature names based on your dataset
-age = st.number_input("Age", min_value=18, max_value=100, value=50)
-smoking = st.selectbox("Smoking", ["No", "Yes"])
-alcohol = st.selectbox("Alcohol Consumption", ["No", "Yes"])
-family_history = st.selectbox("Family History of Cancer", ["No", "Yes"])
-chronic_disease = st.selectbox("Chronic Diseases", ["No", "Yes"])
-coughing = st.selectbox("Frequent Coughing", ["No", "Yes"])
-shortness_of_breath = st.selectbox("Shortness of Breath", ["No", "Yes"])
-
-# Convert categorical inputs into numerical values
-input_data = pd.DataFrame({
-    "Age": [age],
-    "Smoking": [1 if smoking == "Yes" else 0],
-    "Alcohol Consumption": [1 if alcohol == "Yes" else 0],
-    "Family History": [1 if family_history == "Yes" else 0],
-    "Chronic Disease": [1 if chronic_disease == "Yes" else 0],
-    "Coughing": [1 if coughing == "Yes" else 0],
-    "Shortness of Breath": [1 if shortness_of_breath == "Yes" else 0]
-})
-
-# Prediction
-if st.button("Predict"): 
-    prediction = model.predict(input_data)
-    probability = model.predict_proba(input_data)[:, 1]
+def main():
+    st.title("Lung Cancer Prediction App")
+    # Input fields
+    p1 = st.slider("Enter your age", 18, 100)
+    s1 = st.selectbox('SMOKING', ("No", "Yes"))
+    p2 = 1 if s1 == "Yes" else 0
     
-    st.subheader("Prediction Result")
-    if prediction[0] == 1:
-        st.error(f"The model predicts a HIGH RISK of lung cancer with {probability[0]*100:.2f}% probability.")
-    else:
-        st.success(f"The model predicts a LOW RISK of lung cancer with {probability[0]*100:.2f}% probability.")
+    s2 = st.selectbox('GENDER', ("No", "Yes"))
+    p3 = 2 if s2 == "Yes" else 0
+    
+    s3 = st.selectbox('ANXIETY', ("No", "Yes"))
+    p3 = 2 if s3 == "Yes" else 0
+    
+    s4 = st.selectbox('PEER_PRESSURE', ("No", "Yes"))
+    p4 = 2 if s4 == "Yes" else 0
+    
+    s5 = st.selectbox('CHRONIC DISEASE', ("No", "Yes"))
+    p5 = 2 if s5 == "Yes" else 0
+    
+    s6 = st.selectbox('FATIGUE', ("No", "Yes"))
+    p6 = 2 if s6 == "Yes" else 0
+    
+    s7 = st.selectbox('ALLERGY', ("No", "Yes"))
+    p7 = 2 if s7 == "Yes" else 0
+    
+    s8 = st.selectbox('WHEEZING', ("No", "Yes"))
+    p8 = 2 if s8 == "Yes" else 0
+    
+    s9 = st.selectbox('ALCOHOL CONSUMING', ("No", "Yes"))
+    p9 = 2 if s9 == "Yes" else 0
+    
+    s10 = st.selectbox('COUGHING', ("No", "Yes"))
+    p10 = 2 if s10 == "Yes" else 0
+    
+    s11 = st.selectbox('SHORTNESS OF BREATH ', ("No", "Yes"))
+    p11 = 2 if s11 == "Yes" else 0
+    
+    s12 = st.selectbox('SWALLOWING DIFFICULTY', ("No", "Yes"))
+    p12 = 2 if s12 == "Yes" else 0
+    
+    s13 = st.selectbox('CHEST PAIN', ("No", "Yes"))
+    p13 = 2 if s13 == "Yes" else 0
+    
+    s14 = st.selectbox('YELLOW_FINGERS', ("No", "Yes"))
+    p14 = 2 if s14 == "Yes" else 0
+    
+    #print(f"Inputs: {p1}, {p2}, {p3}, {p4}, {p5}, {p6}")
+    input_data = np.array([[p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14]])
+    print(f"Input data shape: {input_data.shape}")
 
-st.write("Disclaimer: This is an AI-based prediction and not a medical diagnosis. Please consult a doctor for medical advice.")
+    # Predict button
+    if st.button("Predict"):
+        prediction = model.predict(input_data)
+
+       # Display results
+        if prediction == 0:
+            st.success(f"The transaction is  Non-Fraudulent")
+            gif_url_1 = "https://media1.tenor.com/m/n8DB4bmpduIAAAAd/yeah-bwoi-grin.gif"
+            st.markdown(f'<img src="{gif_url_1}" width="600" height="400">', unsafe_allow_html=True)
+        else:
+            st.error(f"The transaction is  Fraudulent")
+            gif_url_1 = "https://media.tenor.com/9kVFrGqvcwsAAAAM/fraud-troll.gif"
+            st.markdown(f'<img src="{gif_url_1}" width="600" height="400">', unsafe_allow_html=True)
+
+if __name__ == '__main__':
+    main()
+
