@@ -69,7 +69,7 @@ def main():
         prediction = model.predict(input_data)
 
        # Display results
-        if prediction == 0:
+        if prediction == 1:
             st.success(f"The patient has high risk of Lung cancer")
             gif_url_1 = "https://media1.tenor.com/m/n8DB4bmpduIAAAAd/yeah-bwoi-grin.gif"
             st.markdown(f'<img src="{gif_url_1}" width="600" height="400">', unsafe_allow_html=True)
