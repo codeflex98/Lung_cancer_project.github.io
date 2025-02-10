@@ -18,45 +18,31 @@ def main():
     # Input fields
     s1 = st.selectbox('GENDER', ("Male", "Female"))
     p1 = 2 if s1 == "Female" else 0
-    
     p2 = st.slider("Enter your age", 18, 100)
-    
     s3 = st.selectbox('SMOKING', ("No", "Yes"))
     p3 = 1 if s3 == "Yes" else 0
-    
     s4 = st.selectbox('YELLOW_FINGERS', ("No", "Yes"))
     p4 = 2 if s4 == "Yes" else 0
-    
     s5 = st.selectbox('ANXIETY', ("No", "Yes"))
     p5 = 2 if s5 == "Yes" else 0
-    
     s6 = st.selectbox('PEER_PRESSURE', ("No", "Yes"))
     p6 = 2 if s6 == "Yes" else 0
-    
     s7 = st.selectbox('CHRONIC DISEASE', ("No", "Yes"))
     p7 = 2 if s7 == "Yes" else 0
-    
     s8 = st.selectbox('FATIGUE', ("No", "Yes"))
     p8 = 2 if s8 == "Yes" else 0
-    
     s9 = st.selectbox('ALLERGY', ("No", "Yes"))
     p9 = 2 if s9 == "Yes" else 0
-    
     s10 = st.selectbox('WHEEZING', ("No", "Yes"))
     p10 = 2 if s10 == "Yes" else 0
-    
     s11 = st.selectbox('ALCOHOL CONSUMING', ("No", "Yes"))
     p11 = 2 if s11 == "Yes" else 0
-    
     s12 = st.selectbox('COUGHING', ("No", "Yes"))
     p12 = 2 if s12 == "Yes" else 0
-    
     s13 = st.selectbox('SHORTNESS OF BREATH ', ("No", "Yes"))
     p13 = 2 if s13 == "Yes" else 0
-    
     s14 = st.selectbox('SWALLOWING DIFFICULTY', ("No", "Yes"))
     p14 = 2 if s14 == "Yes" else 0
-    
     s15 = st.selectbox('CHEST PAIN', ("No", "Yes"))
     p15 = 2 if s15 == "Yes" else 0
     
