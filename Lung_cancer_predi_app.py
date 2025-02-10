@@ -16,8 +16,8 @@ st.write("Provide the input features to predict lung cancer.")
 def main():
     st.title("Lung Cancer Prediction App")
     # Input fields
-    s1 = st.selectbox('GENDER', ("No", "Yes"))
-    p1 = 2 if s1 == "Yes" else 0
+    s1 = st.selectbox('GENDER', ("Male", "Female"))
+    p1 = 2 if s1 == "Female" else 0
     
     p2 = st.slider("Enter your age", 18, 100)
     
